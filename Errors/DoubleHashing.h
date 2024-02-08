@@ -52,12 +52,14 @@ public:
         }else{
             ll i = 1;
             stepSize = auxHash(key);
-            cout<<stepSize<<endl;
+           // cout<<stepSize<<endl;
             ll hash_k = index; 
             while(table[(hash_k + i*stepSize)%tableSize] != nullptr){
+                //cout<<"in the loop"<<endl;
                 i++;
                 collisions++;
             }
+           // cout<<"index: "<<(hash_k + i*stepSize)%tableSize<<endl;
             table[(hash_k + i*stepSize)%tableSize] = new Node(key, value);
         }
         size++;

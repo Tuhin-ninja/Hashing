@@ -35,23 +35,21 @@ public:
         }
     }
 
+    ~CustomProbing()
+    {
+        delete[] table;
+    }
+
     void insert(string key, long long value)
     {
+        //cout<<"inserting"<<endl;
         ll index = 0;
         if (function == 1)
         {
-            if (find(key) != -1)
-            {
-                return;
-            }
             index = customHash(key);
         }
         else if (function == 2)
         {
-            if (find(key) != -1)
-            {
-                return;
-            }
             index = simpleHash(key);
         }
 
@@ -63,12 +61,13 @@ public:
         {
             ll i = 1;
             ll hash_k = index;
-            while (table[(index + c1 * i + c2 * i * i) % tableSize].getKey() != "")
+            ll stepsize = auxHash(key);
+            while (table[(index + c1 * i + c2 *stepsize* i * i) % tableSize].getKey() != "")
             {
                 i++;
                 collisions++;
             }
-            table[(index + c1 * i + c2 * i * i) % tableSize] = Node(key, value);
+            table[(index + c1 * i + c2 * i*stepsize * i) % tableSize] = Node(key, value);
         }
         size++;
     }
@@ -101,34 +100,34 @@ public:
         {
             ll i = 1;
             ll hash_k = index;
-            while (table[(index + c1 * i + c2 * i * i) % tableSize].getKey() != key)
+            ll stepSize = auxHash(key);
+            while (table[(index + c1 * i + c2 *stepSize* i * i) % tableSize].getKey() != key)
             {
                 i++;
             }
-            table[(index + c1 * i + c2 * i * i) % tableSize] = Node();
+            table[(index + c1 * i + c2 * stepSize*i * i) % tableSize] = Node();
         }
         size--;
     }
 
     long long find(string key)
     {
+        //cout<<"in find"<<endl;
         ll index = 0;
         if (function == 1)
         {
-            if (find(key) == -1)
-            {
-                return -1;
-            }
             index = customHash(key);
         }
         else if (function == 2)
         {
-            if (find(key) == -1)
-            {
-                return -1;
-            }
             index = simpleHash(key);
         }
+
+        if (table[index].getKey() == "")
+        {
+            return -1;
+        }
+        else
 
         if (table[index].getKey() == key)
         {
@@ -138,12 +137,13 @@ public:
         {
             ll i = 1;
             ll hash_k = index;
+            ll stepSize = auxHash(key);
             while (table[(index + c1 * i + c2 * i * i) % tableSize].getKey() != key)
             {
                 i++;
                 probes++;
             }
-            return table[(index + c1 * i + c2 * i * i) % tableSize].getValue();
+            return table[(index + c1 * i + c2 * stepSize*i * i) % tableSize].getValue();
         }
     }
 };

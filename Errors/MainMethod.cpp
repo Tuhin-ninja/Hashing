@@ -25,36 +25,37 @@ int main(){
     for(ll &i : size){
         cout<<i<<endl;
         cout<<"okay"<<endl;
-        // for(ll j = 1; j <= 2; j++){
-        //     //cout<<"okay2"<<endl;
-        //     Chaining *chaining = new Chaining(i, j);
+        for(ll j = 1; j <= 2; j++){
+            //cout<<"okay2"<<endl;
+            Chaining *chaining = new Chaining(i, j);
 
-        //     for(ll m = 0; m < N; m++){
-        //         chaining->insert(testWords[m], chaining->getSize() + 1);
-        //         //cout<<"okay"<<endl;
-        //     }
+            for(ll m = 0; m < N; m++){
+                chaining->insert(testWords[m], chaining->getSize() + 1);
+                //cout<<"okay"<<endl;
+            }
 
-        //     chaining->resetProbes();
+            chaining->resetProbes();
 
-        //     for(ll m = 0; m < T; m++){
-        //         chaining->find(testWords[m]);
+            for(ll m = 0; m < T; m++){
+                chaining->find(testWords[m]);
                 
-        //     }
+            }
 
-        //     report[n][0][j - 1][0] = chaining->getCollisions();
-        //     report[n][0][j - 1][1] = chaining->getProbes()*1.0 / T;
-        //     cout<<report[n][0][j - 1][0]<<" ";
-        //     cout<<report[n][0][j - 1][1]<<endl;
+            report[n][0][j - 1][0] = chaining->getCollisions();
+            report[n][0][j - 1][1] = chaining->getProbes()*1.0 / T;
+            cout<<report[n][0][j - 1][0]<<" ";
+            cout<<report[n][0][j - 1][1]<<endl;
 
-        //     delete chaining;
-        // }
+            delete chaining;
+        }
 
         for(ll j=1;j<=2;j++){ 
             DoubleHashing *doubleHashing = new DoubleHashing(i, j);
-            for(ll m = 0; m < N; m++){
+            for(ll m = 0; m < T; m++){
                 if(doubleHashing->find(testWords[m]) == -1)
                    doubleHashing->insert(testWords[m], doubleHashing->getSize() + 1);
             }
+            cout<<"hashing"<<endl;
 
             doubleHashing->resetProbes();
             for(ll m = 0; m < T; m++){
@@ -62,7 +63,7 @@ int main(){
             }
 
             report[n][1][j - 1][0] = doubleHashing->getCollisions();
-            report[n][1][j - 1][1] = doubleHashing->getProbes() / T;
+            report[n][1][j - 1][1] = doubleHashing->getProbes()*1.0 / T;
             cout<<report[n][1][j - 1][0]<<" ";
             cout<<report[n][1][j - 1][1]<<endl;
             delete doubleHashing;
@@ -70,12 +71,17 @@ int main(){
 
         for(ll j=1;j<=2;j++){
             CustomProbing *customProbing = new CustomProbing(i, j,c1,c2);
-            for(ll m = 0; m < N; m++){
-                if(customProbing->find(testWords[m]) == -1)
+            for(ll m = 0; m < T; m++){
+                //cout<<"inserting"<<endl;
+                if(customProbing->find(testWords[m]) == -1){
+                   // cout<<"find successful"<<endl;
                     customProbing->insert(testWords[m], customProbing->getSize() + 1);
+                }
+    
             }
             customProbing->resetProbes();
             for(ll m = 0; m < T; m++){
+                cout<<"in the find"<<endl;
                 customProbing->find(testWords[m]);
             }
             report[n][2][j - 1][0] = customProbing->getCollisions();
